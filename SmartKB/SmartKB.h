@@ -24,10 +24,10 @@ extern "C"
 
 SMARTKB_API int  SMartKB_Init(SMARTKB_CALLBACK callback);
 SMARTKB_API void SMartKB_AddItem(PSMARTKBITEM pItem, int nCount);
-SMARTKB_API HWND SMartKB_Show(HWND hwnd, int nShow);
+SMARTKB_API HWND SMartKB_Create(HWND hwnd, int nShow);
 SMARTKB_API void SMartKB_Destory();
-SMARTKB_API void SMartKB_Input(TCHAR Key);
-SMARTKB_API void SMartKB_Control(WPARAM VKey);
+SMARTKB_API void SMartKB_Input(LPCTSTR lpszKey);
+SMARTKB_API BOOL SMartKB_Control(WPARAM VKey);
 SMARTKB_API void SMartKB_Term();
 }
 

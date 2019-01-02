@@ -27,7 +27,7 @@ int main()
 
 	SMartKB_Init(&my_callback);
 	SMartKB_AddItem(g_items, _countof(g_items));
-	SMartKB_Show(NULL, SW_SHOW);
+	SMartKB_Create(NULL, SW_SHOW);
 	BOOL bRet;
 	for (;;)
 	{
@@ -58,7 +58,7 @@ int main()
 		if (msg.message == WM_CHAR)
 		{
 			TCHAR ch = (TCHAR)msg.wParam;
-			SMartKB_Input('1');
+			SMartKB_Input(_T("1"));
 		}
 	}
 	SMartKB_Term();

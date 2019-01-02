@@ -20,7 +20,7 @@ void SMartKB_AddItem(PSMARTKBITEM pItem, int nCount)
 	g_inst.AddItem(pItem, nCount);
 }
 
-HWND SMartKB_Show(HWND hwnd, int nShow)
+HWND SMartKB_Create(HWND hwnd, int nShow)
 {
 	g_inst.Show(hwnd, nShow);
 	return g_inst.GetSafeHwnd();
@@ -34,14 +34,20 @@ void SMartKB_Destory()
 	}
 }
 
-void SMartKB_Input(TCHAR Key)
+void SMartKB_Input(LPCTSTR lpszKey)
 {
-	g_inst.Input(Key);
+	if (g_inst.IsWindow())
+	{
+		g_inst.Input(lpszKey);
+	}
 }
 
-void SMartKB_Control(WPARAM VKey)
+BOOL SMartKB_Control(WPARAM VKey)
 {
-	g_inst.Control(VKey);
+	if (g_inst.IsWindow())
+	{
+		return g_inst.Control(VKey);
+	}
 }
 
 void SMartKB_Term()
