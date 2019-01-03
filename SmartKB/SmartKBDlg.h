@@ -13,36 +13,7 @@
 #include <thread>         // std::thread
 #include <mutex>          // std::mutex
 
-class MatchCH
-{
-protected:
-	typedef struct
-	{
-		char filedlen;
-		char filednum;
-		unsigned short usStart;
-		unsigned short usEnd;
-	}tagHead;
-	typedef struct
-	{
-		TCHAR	src;
-		TCHAR	dst;
-	}tagMohuYin;
-public:
-	MatchCH();
-	~MatchCH();
-
-public:
-	bool Initialize();
-	void Finishlize();
-	bool MatchPinYin(TCHAR name, TCHAR key);
-	bool MatchPinYin(TCHAR* name, TCHAR* key);
-	TCHAR* Match(const TCHAR* name, const TCHAR* key);
-
-protected:
-	tagHead m_Head;
-	char*  m_pData;
-};
+TCHAR FirstLetter(TCHAR nCode);
 
 class CSmartKBDlg 
 	: public UIDialogImpl<CSmartKBDlg> 
@@ -54,8 +25,37 @@ class CSmartKBDlg
 	typedef UIDialogImpl<CSmartKBDlg> Base;
 	typedef COwnerDraw<CSmartKBDlg> OwnerDraw;
 private:
-	std::shared_ptr<MatchCH> matchch_ptr_;
 	SMARTKB_CALLBACK callback_;
+	class CSMARTKBITEM : public SMARTKBITEM
+	{
+	public:
+		CSMARTKBITEM(SMARTKBITEM& item)
+		{
+			memcpy(szKey1, item.szKey1, sizeof(szKey1));
+			memcpy(szKey2, item.szKey2, sizeof(szKey2));
+			memcpy(szName, item.szName, sizeof(szName));
+			lParam = item.lParam;
+			TCHAR* src = szKey1;
+			TCHAR* dst = szPinyin1;
+			while (*src)
+			{
+				*dst = FirstLetter(*src);
+				src++;
+				dst++;
+			}
+			src = szKey2;
+			dst = szPinyin2;
+			while (*src)
+			{
+				*dst = FirstLetter(*src);
+				src++;
+				dst++;
+			}
+		}
+
+		TCHAR szPinyin1[MAX_KEY_LENGTH + 1];
+		TCHAR szPinyin2[MAX_KEY_LENGTH + 1];
+	};
 	std::vector<SMARTKBITEM> items_;
 	size_t max_results_;
 	bool stop_flag_;
